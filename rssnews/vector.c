@@ -8,13 +8,12 @@ void VectorNew(vector *v, int elemSize, VectorFreeFunction freeFn, int initialAl
 {
 	assert(v != NULL);
 	v->logicalLength = 0;
+
+	if (initialAllocation == 0)
+		initialAllocation = 10;
+
 	v->allocatedLength = initialAllocation;
-
-	if (initialAllocation != 0)
-		v->allocationChunk = initialAllocation;	
-	else	
-		v->allocationChunk = 10;
-
+	v->allocationChunk = initialAllocation;
 	v->elemSize = elemSize;
 	v->elems = malloc(initialAllocation * elemSize);
 	v->freeFn = freeFn;
