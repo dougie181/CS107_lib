@@ -60,7 +60,7 @@ void VectorReplace(vector *v, const void *elemAddr, int position)
 }
 
 void VectorGrow(vector *v) {
-	v->allocatedLength += (v->allocationChunk * v->elemSize);
+	v->allocatedLength += v->allocationChunk;
 	v->elems = realloc(v->elems, v->allocatedLength * v->elemSize);
 }
 
