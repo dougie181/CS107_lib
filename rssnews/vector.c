@@ -106,7 +106,7 @@ void VectorDelete(vector *v, int position)
 	if (position != v->logicalLength) {
 		void *moveTo = (char *)v->elems + (position * v->elemSize);
 		void *moveFrom = (char *)moveTo + v->elemSize;
-		memcpy(moveTo, moveFrom, (v->logicalLength - position) * v->elemSize);
+		memmove(moveTo, moveFrom, (v->logicalLength - position) * v->elemSize);
 	}
 	//checkElems = VectorLength(v);
 	
