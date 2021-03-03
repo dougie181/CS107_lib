@@ -98,6 +98,9 @@ void VectorDelete2(vector2 *v, int position)
 {
 	assert((v != NULL) && (position >=0 ) && (position < v->logicalLength));
 
+	if (v->freeFn != NULL)
+		v->freeFn(VectorNth2(v, position));
+
 	v->logicalLength--;
 
 	// if not at the end, need to move the list up by one

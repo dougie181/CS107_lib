@@ -100,6 +100,9 @@ void VectorDelete(vector *v, int position)
 
 	//int checkElems = VectorLength(v);
 
+	if (v->freeFn != NULL)
+		v->freeFn(VectorNth(v, position));
+
 	v->logicalLength--;
 
 	// if not at the end, need to move the list up by one
