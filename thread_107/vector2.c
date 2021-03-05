@@ -56,6 +56,9 @@ void VectorReplace2(vector2 *v, const void *elemAddr, int position)
 
 	void *target = (char *)v->elems + (position * v->elemSize);
 
+	if (v->freeFn != NULL)
+		v->freeFn(target);
+
 	memcpy(target, elemAddr, v->elemSize);
 }
 
