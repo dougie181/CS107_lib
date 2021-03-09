@@ -224,6 +224,7 @@ void URLConnectionDispose(urlconnection* urlconn)
   }
 */
   if (DEBUG_URLCONN) printf(" .. closing dataStream\n");
-  fclose(urlconn->dataStream);
+  if (urlconn->responseCode != 0)
+    fclose(urlconn->dataStream);
   if (DEBUG_URLCONN) printf("freed up URL Connection\n");
 }
