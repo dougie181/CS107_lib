@@ -8,13 +8,12 @@ void VectorNew2(vector2 *v, int elemSize, VectorFreeFunction2 freeFn, int initia
 {
 	assert(v != NULL);
 	v->logicalLength = 0;
+
+	if (initialAllocation == 0)
+		initialAllocation = 10;
+
 	v->allocatedLength = initialAllocation;
-
-	if (initialAllocation != 0)
-		v->allocationChunk = initialAllocation;	
-	else	
-		v->allocationChunk = 10;
-
+	v->allocationChunk = initialAllocation;
 	v->elemSize = elemSize;
 	v->elems = malloc(initialAllocation * elemSize);
 	v->freeFn = freeFn;
@@ -57,11 +56,14 @@ void VectorReplace2(vector2 *v, const void *elemAddr, int position)
 
 	void *target = (char *)v->elems + (position * v->elemSize);
 
+	if (v->freeFn != NULL)
+		v->freeFn(target);
+
 	memcpy(target, elemAddr, v->elemSize);
 }
 
 void VectorGrow2(vector2 *v) {
-	v->allocatedLength += (v->allocationChunk * v->elemSize);
+	v->allocatedLength += v->allocationChunk;
 	v->elems = realloc(v->elems, v->allocatedLength * v->elemSize);
 }
 
@@ -99,13 +101,16 @@ void VectorDelete2(vector2 *v, int position)
 {
 	assert((v != NULL) && (position >=0 ) && (position < v->logicalLength));
 
+	if (v->freeFn != NULL)
+		v->freeFn(VectorNth2(v, position));
+
 	v->logicalLength--;
 
 	// if not at the end, need to move the list up by one
 	if (position != v->logicalLength) {
 		void *moveTo = (char *)v->elems + (position * v->elemSize);
 		void *moveFrom = (char *)moveTo + v->elemSize;
-		memcpy(moveTo, moveFrom, (v->logicalLength - position) * v->elemSize);
+		memmove(moveTo, moveFrom, (v->logicalLength - position) * v->elemSize);
 	}
 }
 
