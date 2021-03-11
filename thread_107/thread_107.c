@@ -8,6 +8,7 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <sys/errno.h>
+#include <fcntl.h>
 #include "vector2.h"
 #include "bool.h"
 
